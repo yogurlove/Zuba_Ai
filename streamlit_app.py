@@ -1,45 +1,88 @@
 import streamlit as st
 import requests
-import base64
 import os
 import html
+import base64
 
 # ============================================================
-# 🎮🔥 CHILL BRO AI — ALL IN ONE
+# CHILL BRO AI
 # ============================================================
 
 st.set_page_config(
     page_title="Chill Bro AI",
     page_icon="🔥",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 MODEL = "gpt-5.6-luna"
 
+# ============================================================
+# 100+ LANGUAGES
+# ============================================================
+
 LANGUAGES = [
     "English", "Hindi", "Punjabi", "Nepali", "Urdu", "Bengali",
-    "Tamil", "Telugu", "Marathi", "Gujarati", "Kannada",
-    "Malayalam", "Odia", "Assamese", "French", "Spanish",
-    "German", "Italian", "Portuguese", "Russian", "Arabic",
-    "Chinese", "Japanese", "Korean", "Turkish", "Indonesian"
+    "Tamil", "Telugu", "Marathi", "Gujarati", "Kannada", "Malayalam",
+    "Odia", "Assamese", "Maithili", "Sanskrit", "Kashmiri", "Sindhi",
+    "Konkani", "Dogri", "Manipuri", "Bodo", "Santali",
+
+    "French", "Spanish", "German", "Italian", "Portuguese", "Russian",
+    "Ukrainian", "Polish", "Dutch", "Swedish", "Norwegian", "Danish",
+    "Finnish", "Icelandic", "Irish", "Welsh", "Greek", "Romanian",
+    "Hungarian", "Czech", "Slovak", "Bulgarian", "Serbian", "Croatian",
+    "Bosnian", "Slovenian", "Albanian", "Macedonian", "Lithuanian",
+    "Latvian", "Estonian", "Maltese", "Catalan", "Basque", "Galician",
+    "Luxembourgish", "Frisian", "Occitan", "Corsican",
+
+    "Arabic", "Hebrew", "Persian", "Turkish", "Kurdish", "Armenian",
+    "Georgian", "Azerbaijani", "Kazakh", "Uzbek", "Turkmen", "Kyrgyz",
+    "Tajik", "Mongolian", "Pashto", "Dari",
+
+    "Chinese", "Japanese", "Korean", "Vietnamese", "Thai", "Indonesian",
+    "Malay", "Filipino", "Burmese", "Khmer", "Lao", "Sinhala",
+    "Javanese", "Sundanese",
+
+    "Swahili", "Amharic", "Somali", "Hausa", "Yoruba", "Igbo", "Zulu",
+    "Xhosa", "Afrikaans", "Sesotho", "Setswana", "Shona", "Kinyarwanda",
+    "Malagasy",
+
+    "Samoan", "Tongan", "Fijian", "Maori", "Hawaiian",
+    "Haitian Creole", "Esperanto", "Latin",
 ]
 
+# ============================================================
+# PERSONALITIES
+# ============================================================
+
 PERSONALITIES = {
-    "😎 Chill Bro": "Relaxed, friendly, funny and casual like a cool friend.",
-    "😂 Funny": "Humorous, playful and entertaining.",
-    "🧠 Smart": "Intelligent, clear, precise and educational.",
-    "❤️ Lovely": "Warm, kind, positive and supportive.",
-    "🤝 Best Friend": "Talk naturally like a close best friend. Casual, honest and supportive.",
-    "💀 Extreme Toxic": (
-        "Use a chaotic, profanity-heavy fictional bro-style personality. "
-        "Strong profanity and vulgar slang are allowed for playful trash-talk. "
-        "You can use words such as fuck, shit, damn and dumbass. "
-        "Keep it playful and non-threatening. "
-        "Do not use hateful slurs, threats, violence, harassment or attacks "
-        "against protected groups."
-    ),
+    "😎 Chill Bro":
+        "Relaxed, friendly, casual and naturally funny.",
+
+    "😂 Funny":
+        "Playful, humorous and entertaining.",
+
+    "🧠 Smart":
+        "Precise, intelligent, logical and educational.",
+
+    "❤️ Lovely":
+        "Warm, kind, positive and supportive.",
+
+    "🤝 Best Friend":
+        "Talk naturally like a close best friend. Casual, honest and supportive.",
+
+    "💀 Extreme Toxic":
+        (
+            "Use playful fictional bro-style trash talk with strong profanity "
+            "such as fuck, shit, damn and dumbass when appropriate. "
+            "Keep it playful and non-threatening. "
+            "Never use hateful slurs, threats, violence or attacks on protected groups."
+        ),
 }
+
+# ============================================================
+# STUDY TOOLS
+# ============================================================
 
 STUDY_TOOLS = [
     "📖 Explain Topic",
@@ -50,6 +93,10 @@ STUDY_TOOLS = [
     "📅 Study Plan",
     "🔍 Exam Preparation",
 ]
+
+# ============================================================
+# GAMING TOOLS
+# ============================================================
 
 GAMING_TOOLS = [
     "🎯 Game Tips",
@@ -66,223 +113,384 @@ GAMING_TOOLS = [
     "🎲 Game Recommendation",
 ]
 
+# ============================================================
+# THEMES
+# ============================================================
+
 THEMES = {
-    "🌌 Neon Night": ("#070016", "#00eaff", "#ff00e6"),
-    "🌈 Rainbow": ("#12001f", "#ff00aa", "#00ffff"),
-    "💜 Purple Dream": ("#10001c", "#b700ff", "#ff4fd8"),
-    "🌊 Ocean": ("#00131c", "#00e5ff", "#008cff"),
-    "💚 Matrix": ("#001008", "#00ff66", "#00cc44"),
-    "🌅 Sunset": ("#21000c", "#ff5e00", "#ff0066"),
-    "💗 Pink Candy": ("#21000f", "#ff4da6", "#ff99cc"),
-    "❄️ Ice": ("#00141f", "#8ffcff", "#4da6ff"),
-    "🔥 Fire": ("#200500", "#ff5e00", "#ffcc00"),
-    "🖤 Dark": ("#050505", "#ffffff", "#888888"),
-    "🤍 Light": ("#f4f4f4", "#111111", "#666666"),
+    "🌌 Neon Night": {
+        "bg": "#070b18",
+        "surface": "#0f172a",
+        "card": "#111c33",
+        "primary": "#22d3ee",
+        "secondary": "#a855f7",
+        "text": "#f8fafc",
+        "muted": "#94a3b8",
+        "input": "#0b1222",
+    },
+
+    "💜 Purple": {
+        "bg": "#0b0714",
+        "surface": "#171025",
+        "card": "#1d1430",
+        "primary": "#c084fc",
+        "secondary": "#8b5cf6",
+        "text": "#faf5ff",
+        "muted": "#c4b5fd",
+        "input": "#120b20",
+    },
+
+    "🌊 Ocean": {
+        "bg": "#061218",
+        "surface": "#0b2029",
+        "card": "#102c38",
+        "primary": "#22d3ee",
+        "secondary": "#3b82f6",
+        "text": "#f0fdfa",
+        "muted": "#94a3b8",
+        "input": "#081a22",
+    },
+
+    "💚 Matrix": {
+        "bg": "#050b07",
+        "surface": "#0b1710",
+        "card": "#0f2116",
+        "primary": "#22c55e",
+        "secondary": "#86efac",
+        "text": "#f0fdf4",
+        "muted": "#86a98f",
+        "input": "#07130b",
+    },
+
+    "🔥 Fire": {
+        "bg": "#120806",
+        "surface": "#21100a",
+        "card": "#2b150d",
+        "primary": "#fb923c",
+        "secondary": "#f43f5e",
+        "text": "#fff7ed",
+        "muted": "#fdba74",
+        "input": "#180b07",
+    },
+
+    "🌅 Sunset": {
+        "bg": "#120a12",
+        "surface": "#211020",
+        "card": "#2c1426",
+        "primary": "#fb7185",
+        "secondary": "#f97316",
+        "text": "#fff1f2",
+        "muted": "#fda4af",
+        "input": "#180b14",
+    },
+
+    "🖤 Dark": {
+        "bg": "#080808",
+        "surface": "#121212",
+        "card": "#181818",
+        "primary": "#ffffff",
+        "secondary": "#9ca3af",
+        "text": "#ffffff",
+        "muted": "#9ca3af",
+        "input": "#101010",
+    },
 }
 
 # ============================================================
 # SESSION STATE
 # ============================================================
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+defaults = {
+    "messages": [],
+    "theme": "🌌 Neon Night",
+    "language": "English",
+    "personality": "😎 Chill Bro",
+    "mode": "🤖 Chill Bro Chat",
+    "music_on": False,
+    "music_volume": 0.25,
+    "study_tool": "📖 Explain Topic",
+    "gaming_tool": "🎯 Game Tips",
+}
 
-if "theme" not in st.session_state:
-    st.session_state.theme = "🌌 Neon Night"
+for key, value in defaults.items():
+    if key not in st.session_state:
+        st.session_state[key] = value
 
-if "language" not in st.session_state:
-    st.session_state.language = "English"
-
-if "personality" not in st.session_state:
-    st.session_state.personality = "😎 Chill Bro"
-
-if "mode" not in st.session_state:
-    st.session_state.mode = "🤖 Chill Bro Chat"
-
-if "music_on" not in st.session_state:
-    st.session_state.music_on = False
-
-if "music_volume" not in st.session_state:
-    st.session_state.music_volume = 0.25
-
-if "sound_on" not in st.session_state:
-    st.session_state.sound_on = False
-
-if "stickers_on" not in st.session_state:
-    st.session_state.stickers_on = True
-
-if "gif_on" not in st.session_state:
-    st.session_state.gif_on = True
-
-# ============================================================
-# THEME
-# ============================================================
-
-bg, primary, secondary = THEMES[st.session_state.theme]
+theme = THEMES[st.session_state.theme]
 
 # ============================================================
 # CSS
 # ============================================================
 
-css = f'''
+st.markdown(
+    f"""
 <style>
+
+html, body, [class*="css"] {{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+}}
 
 .stApp {{
     background:
-        radial-gradient(circle at 15% 20%, {primary}22 0%, transparent 28%),
-        radial-gradient(circle at 85% 80%, {secondary}22 0%, transparent 28%),
-        linear-gradient(135deg, {bg}, #03030a 70%);
-    color: white;
+        radial-gradient(
+            circle at 15% 10%,
+            {theme["primary"]}10,
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            {theme["secondary"]}0d,
+            transparent 35%
+        ),
+        {theme["bg"]};
+    color: {theme["text"]};
+}}
+
+[data-testid="stHeader"] {{
+    background: transparent;
 }}
 
 [data-testid="stSidebar"] {{
-    background: linear-gradient(180deg, {bg}, #03030a);
-    border-right: 1px solid {primary}55;
+    background: {theme["surface"]};
+    border-right: 1px solid {theme["primary"]}25;
 }}
 
-.main-title {{
+.block-container {{
+    max-width: 1050px;
+    padding-top: 2rem;
+    padding-bottom: 7rem;
+}}
+
+.app-header {{
     text-align: center;
-    font-size: 48px;
-    font-weight: 900;
-    color: {primary};
-    text-shadow:
-        0 0 8px {primary},
-        0 0 20px {primary},
-        0 0 40px {secondary};
-    animation: titleGlow 2s infinite alternate;
+    padding: 25px 10px 20px;
 }}
 
-.subtitle {{
-    text-align: center;
-    color: white;
-    font-size: 18px;
-    opacity: .85;
-    margin-bottom: 20px;
-}}
-
-.anime-face {{
-    width: 110px;
-    height: 110px;
-    margin: 10px auto 20px auto;
-    border-radius: 50%;
-    background:
-        radial-gradient(circle at 35% 35%, white 0 4%, transparent 5%),
-        radial-gradient(circle at 65% 35%, white 0 4%, transparent 5%),
-        linear-gradient(145deg, {primary}, {secondary});
-    border: 4px solid white;
-    box-shadow:
-        0 0 15px {primary},
-        0 0 35px {secondary};
-    animation: floatFace 2.5s infinite ease-in-out;
-    position: relative;
-}}
-
-.anime-face:after {{
-    content: "⌣";
-    position: absolute;
-    left: 39px;
-    top: 52px;
-    font-size: 30px;
-    color: white;
-}}
-
-.energy-ring {{
-    width: 145px;
-    height: 145px;
-    border-radius: 50%;
-    border: 2px solid {primary};
-    margin: -138px auto 35px auto;
-    opacity: .5;
-    animation: ring 2s infinite linear;
-}}
-
-.chat-card {{
-    padding: 12px 16px;
+.app-logo {{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
     border-radius: 18px;
-    margin: 8px 0;
-    border: 1px solid {primary}44;
-    background: rgba(255,255,255,.04);
-    animation: messageIn .35s ease;
+    background:
+        linear-gradient(
+            135deg,
+            {theme["primary"]},
+            {theme["secondary"]}
+        );
+    box-shadow:
+        0 8px 35px {theme["primary"]}30;
+    font-size: 30px;
+    margin-bottom: 14px;
 }}
 
-.user-card {{
-    border-left: 4px solid {secondary};
+.app-title {{
+    margin: 0;
+    font-size: clamp(32px, 7vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    color: {theme["text"]};
 }}
 
-.assistant-card {{
-    border-left: 4px solid {primary};
+.app-title span {{
+    color: {theme["primary"]};
 }}
 
-.sticker {{
-    display: inline-block;
-    font-size: 35px;
-    animation: sticker 1.8s infinite ease-in-out;
-    margin: 5px;
+.app-subtitle {{
+    margin-top: 8px;
+    color: {theme["muted"]};
+    font-size: 15px;
 }}
 
-.gaming-box {{
-    padding: 18px;
-    border-radius: 20px;
-    border: 1px solid {primary}66;
-    background: linear-gradient(135deg, {primary}12, {secondary}12);
-    box-shadow: 0 0 25px {primary}22;
-    margin-bottom: 15px;
+.mode-badge {{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 13px;
+    margin-top: 14px;
+    border-radius: 999px;
+    background: {theme["primary"]}12;
+    border: 1px solid {theme["primary"]}30;
+    color: {theme["primary"]};
+    font-size: 13px;
+    font-weight: 600;
 }}
 
-@keyframes titleGlow {{
-    from {{
-        text-shadow: 0 0 8px {primary};
-    }}
-    to {{
-        text-shadow:
-            0 0 10px {primary},
-            0 0 30px {secondary},
-            0 0 50px {primary};
-    }}
+.welcome-card {{
+    max-width: 700px;
+    margin: 25px auto;
+    padding: 28px;
+    border-radius: 22px;
+    background: {theme["card"]};
+    border: 1px solid {theme["primary"]}18;
+    box-shadow: 0 15px 45px rgba(0,0,0,.18);
+    text-align: center;
 }}
 
-@keyframes floatFace {{
-    0%,100% {{
-        transform: translateY(0px);
-    }}
-    50% {{
-        transform: translateY(-10px);
-    }}
+.welcome-icon {{
+    font-size: 42px;
+    margin-bottom: 10px;
 }}
 
-@keyframes ring {{
-    from {{
-        transform: rotate(0deg) scale(.9);
-    }}
-    to {{
-        transform: rotate(360deg) scale(1.05);
-    }}
+.welcome-title {{
+    font-size: 21px;
+    font-weight: 700;
+    color: {theme["text"]};
 }}
 
-@keyframes messageIn {{
-    from {{
-        opacity: 0;
-        transform: translateY(8px);
-    }}
-    to {{
-        opacity: 1;
-        transform: translateY(0);
-    }}
+.welcome-text {{
+    margin-top: 8px;
+    color: {theme["muted"]};
+    line-height: 1.6;
 }}
 
-@keyframes sticker {{
-    0%,100% {{
-        transform: rotate(-8deg) scale(1);
+/* ============================================================
+   WHATSAPP-STYLE CHAT
+   ============================================================ */
+
+.chat-row {{
+    display: flex;
+    width: 100%;
+    margin: 5px 0;
+}}
+
+.chat-row.user {{
+    justify-content: flex-end;
+}}
+
+.chat-row.ai {{
+    justify-content: flex-start;
+}}
+
+.chat-bubble {{
+    position: relative;
+    max-width: min(75%, 680px);
+    padding: 9px 12px 8px;
+    border-radius: 14px;
+    line-height: 1.48;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+    box-shadow: 0 1px 2px rgba(0,0,0,.18);
+}}
+
+.user-bubble {{
+    background: #005c4b;
+    color: #ffffff;
+    border-bottom-right-radius: 4px;
+}}
+
+.ai-bubble {{
+    background: #202c33;
+    color: #e9edef;
+    border-bottom-left-radius: 4px;
+}}
+
+.chat-label {{
+    display: none;
+}}
+
+/* ============================================================
+   CHAT INPUT
+   ============================================================ */
+
+[data-testid="stChatInput"] {{
+    background: transparent !important;
+}}
+
+[data-testid="stChatInput"] > div {{
+    background: {theme["input"]} !important;
+    border: 1px solid {theme["primary"]}45 !important;
+    border-radius: 18px !important;
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.25),
+        0 0 0 1px {theme["primary"]}08 !important;
+}}
+
+[data-testid="stChatInput"] textarea {{
+    color: {theme["text"]} !important;
+    -webkit-text-fill-color: {theme["text"]} !important;
+    caret-color: {theme["primary"]} !important;
+    background: transparent !important;
+    font-size: 16px !important;
+}}
+
+[data-testid="stChatInput"] textarea::placeholder {{
+    color: {theme["muted"]} !important;
+    -webkit-text-fill-color: {theme["muted"]} !important;
+    opacity: 1 !important;
+}}
+
+[data-testid="stChatInput"] textarea:focus {{
+    color: {theme["text"]} !important;
+    -webkit-text-fill-color: {theme["text"]} !important;
+}}
+
+[data-testid="stChatInput"] button {{
+    color: {theme["primary"]} !important;
+}}
+
+.stButton > button {{
+    border-radius: 12px !important;
+    border: 1px solid {theme["primary"]}25 !important;
+    background: {theme["card"]} !important;
+    color: {theme["text"]} !important;
+    font-weight: 600 !important;
+}}
+
+.stButton > button:hover {{
+    border-color: {theme["primary"]}70 !important;
+    color: {theme["primary"]} !important;
+}}
+
+div[data-baseweb="select"] > div {{
+    background: {theme["card"]} !important;
+    border-color: {theme["primary"]}20 !important;
+}}
+
+div[data-baseweb="select"] span {{
+    color: {theme["text"]} !important;
+}}
+
+[data-testid="stRadio"] label {{
+    color: {theme["text"]} !important;
+}}
+
+.footer {{
+    text-align: center;
+    color: {theme["muted"]};
+    font-size: 12px;
+    padding: 30px 0 10px;
+}}
+
+@media (max-width: 700px) {{
+
+    .block-container {{
+        padding: 1rem .75rem 6rem;
     }}
-    50% {{
-        transform: rotate(8deg) scale(1.15);
+
+    .chat-bubble {{
+        max-width: 85%;
+        font-size: 15px;
+        padding: 9px 11px 8px;
+    }}
+
+    .app-title {{
+        font-size: 34px;
     }}
 }}
 
 </style>
-'''
-
-st.markdown(css, unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # ============================================================
 # SIDEBAR
@@ -290,7 +498,21 @@ st.markdown(css, unsafe_allow_html=True)
 
 with st.sidebar:
 
-    st.markdown("## 🔥 Chill Bro AI")
+    st.markdown(
+        f"""
+        <div style="
+            font-size:22px;
+            font-weight:800;
+            color:{theme["text"]};
+            padding-bottom:12px;
+        ">
+            🔥 <span style="color:{theme["primary"]};">
+            Chill Bro
+            </span> AI
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     modes = [
         "🤖 Chill Bro Chat",
@@ -299,35 +521,35 @@ with st.sidebar:
     ]
 
     st.session_state.mode = st.radio(
-        "Choose Mode",
+        "Mode",
         modes,
         index=modes.index(st.session_state.mode),
     )
 
-    st.markdown("---")
-
-    theme_names = list(THEMES.keys())
+    st.divider()
 
     st.session_state.theme = st.selectbox(
         "🎨 Theme",
-        theme_names,
-        index=theme_names.index(st.session_state.theme),
+        list(THEMES.keys()),
+        index=list(THEMES.keys()).index(
+            st.session_state.theme
+        ),
     )
 
     st.session_state.language = st.selectbox(
         "🌍 Language",
         LANGUAGES,
-        index=LANGUAGES.index(st.session_state.language),
+        index=LANGUAGES.index(
+            st.session_state.language
+        ),
     )
 
     if st.session_state.mode == "🤖 Chill Bro Chat":
 
-        personality_names = list(PERSONALITIES.keys())
-
         st.session_state.personality = st.selectbox(
             "🎭 Personality",
-            personality_names,
-            index=personality_names.index(
+            list(PERSONALITIES.keys()),
+            index=list(PERSONALITIES.keys()).index(
                 st.session_state.personality
             ),
         )
@@ -337,6 +559,9 @@ with st.sidebar:
         st.session_state.study_tool = st.selectbox(
             "📚 Study Tool",
             STUDY_TOOLS,
+            index=STUDY_TOOLS.index(
+                st.session_state.study_tool
+            ),
         )
 
     else:
@@ -344,112 +569,94 @@ with st.sidebar:
         st.session_state.gaming_tool = st.selectbox(
             "🎮 Gaming Tool",
             GAMING_TOOLS,
+            index=GAMING_TOOLS.index(
+                st.session_state.gaming_tool
+            ),
         )
 
-    st.markdown("---")
+    st.divider()
 
-    if st.button("🧹 Clear Chat", use_container_width=True):
-        st.session_state.messages = []
-        st.rerun()
-
-    st.markdown("### 🎵 Background Music")
+    st.markdown("### 🎵 7 Week 3 Days")
 
     st.session_state.music_on = st.toggle(
-        "🎧 Golden Brown Instrumental",
+        "🎵 Play Background Music",
         value=st.session_state.music_on,
     )
 
     st.session_state.music_volume = st.slider(
-        "🔊 Volume",
-        min_value=0.0,
-        max_value=1.0,
-        value=st.session_state.music_volume,
-        step=0.05,
+        "🔊 Music Volume",
+        0.0,
+        1.0,
+        st.session_state.music_volume,
+        0.05,
     )
 
-    st.session_state.sound_on = st.toggle(
-        "⚡ Anime Sound",
-        value=st.session_state.sound_on,
-    )
+    st.divider()
 
-    st.session_state.stickers_on = st.toggle(
-        "✨ Animated Stickers",
-        value=st.session_state.stickers_on,
-    )
-
-    st.session_state.gif_on = st.toggle(
-        "🎬 Anime GIF",
-        value=st.session_state.gif_on,
-    )
+    if st.button(
+        "🧹 Clear Conversation",
+        use_container_width=True,
+    ):
+        st.session_state.messages = []
+        st.rerun()
 
 # ============================================================
-# AUDIO
+# BACKGROUND MUSIC
 # ============================================================
 
-def play_local_audio(filename, autoplay=False, loop=False, volume=0.5):
+def play_background_music():
+
+    filename = "7week 3days.mp3"
 
     if not os.path.exists(filename):
         st.warning(
-            f"🎵 Add `{filename}` to the same folder as this app "
-            f"to use this audio."
+            "🎵 Upload `7week 3days.mp3` to the same GitHub folder as this file."
         )
         return
 
     try:
 
         with open(filename, "rb") as audio_file:
+
             audio_data = base64.b64encode(
                 audio_file.read()
             ).decode()
 
-        autoplay_text = "autoplay" if autoplay else ""
-        loop_text = "loop" if loop else ""
-
-        audio_html = f'''
-        <audio
-            controls
-            {autoplay_text}
-            {loop_text}
-            style="width:100%;"
-        >
-            <source
-                src="data:audio/mpeg;base64,{audio_data}"
-                type="audio/mpeg"
-            >
-        </audio>
-
-        <script>
-        const audioElements = document.querySelectorAll("audio");
-        audioElements.forEach(function(audio) {{
-            audio.volume = {volume};
-        }});
-        </script>
-        '''
+        volume = st.session_state.music_volume
 
         st.markdown(
-            audio_html,
+            f"""
+            <audio
+                controls
+                autoplay
+                loop
+                style="
+                    width:100%;
+                    height:38px;
+                    margin:8px 0 15px 0;
+                "
+            >
+                <source
+                    src="data:audio/mpeg;base64,{audio_data}"
+                    type="audio/mpeg"
+                >
+            </audio>
+
+            <script>
+            document.querySelectorAll("audio").forEach(function(audio) {{
+                audio.volume = {volume};
+            }});
+            </script>
+            """,
             unsafe_allow_html=True,
         )
 
     except Exception:
-        st.warning(f"Could not load `{filename}`.")
+        pass
 
 
 if st.session_state.music_on:
-    play_local_audio(
-        "golden_brown.mp3",
-        autoplay=True,
-        loop=True,
-        volume=st.session_state.music_volume,
-    )
-
-if st.session_state.sound_on:
-    play_local_audio(
-        "anime_power.mp3",
-        autoplay=True,
-        loop=False,
-        volume=0.35,
-    )
+    play_background_music()
 
 # ============================================================
 # HEADER
@@ -457,66 +664,102 @@ if st.session_state.sound_on:
 
 if st.session_state.mode == "🤖 Chill Bro Chat":
 
-    title = "🔥 Chill Bro AI"
-    subtitle = "⚡ Your anime-powered AI bro 😎"
+    title = "Chill Bro <span>AI</span>"
+    subtitle = (
+        "Your personal AI assistant, study partner and gaming bro."
+    )
+    badge = "🤖 AI CHAT"
 
 elif st.session_state.mode == "📚 Study Helper":
 
-    title = "📚 Study Helper"
-    subtitle = "✨ Train your brain like an anime protagonist 🧠🔥"
+    title = "Study <span>Helper</span>"
+    subtitle = (
+        "Learn faster with explanations, quizzes and study tools."
+    )
+    badge = "📚 STUDY MODE"
 
 else:
 
-    title = "🎮 Gaming Helper"
-    subtitle = "⚔️ Level up your gaming skills, bro 🔥"
-
-st.markdown(
-    f'<div class="main-title">{title}</div>',
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    f'<div class="subtitle">{subtitle}</div>',
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    '<div class="anime-face"></div>',
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    '<div class="energy-ring"></div>',
-    unsafe_allow_html=True,
-)
-
-if st.session_state.stickers_on:
-
-    st.markdown(
-        '''
-        <div style="text-align:center;">
-            <span class="sticker">🔥</span>
-            <span class="sticker">⚡</span>
-            <span class="sticker">🎮</span>
-            <span class="sticker">😎</span>
-            <span class="sticker">💀</span>
-        </div>
-        ''',
-        unsafe_allow_html=True,
+    title = "Gaming <span>Helper</span>"
+    subtitle = (
+        "Strategies, builds, settings and gaming advice."
     )
+    badge = "🎮 GAMING MODE"
 
-if st.session_state.gif_on:
+st.markdown(
+    f"""
+    <div class="app-header">
+
+        <div class="app-logo">🔥</div>
+
+        <h1 class="app-title">
+            {title}
+        </h1>
+
+        <div class="app-subtitle">
+            {subtitle}
+        </div>
+
+        <div class="mode-badge">
+            {badge}
+        </div>
+
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ============================================================
+# WELCOME
+# ============================================================
+
+if not st.session_state.messages:
+
+    if st.session_state.mode == "🤖 Chill Bro Chat":
+
+        icon = "🤖"
+        welcome_title = "What can I help you with?"
+        welcome_text = (
+            "Ask questions, brainstorm ideas, learn something new, "
+            "or just chat."
+        )
+
+    elif st.session_state.mode == "📚 Study Helper":
+
+        icon = "📚"
+        welcome_title = "Ready to study?"
+        welcome_text = (
+            "Ask me to explain a topic, make a quiz, create "
+            "flashcards, or build a study plan."
+        )
+
+    else:
+
+        icon = "🎮"
+        welcome_title = "Ready to level up?"
+        welcome_text = (
+            "Ask about strategies, loadouts, sensitivity, builds, "
+            "missions, bosses or game recommendations."
+        )
 
     st.markdown(
-        '''
-        <div style="text-align:center;margin:10px;">
-            <img
-                src="https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif"
-                width="180"
-                style="border-radius:20px;"
-            >
+        f"""
+        <div class="welcome-card">
+
+            <div class="welcome-icon">
+                {icon}
+            </div>
+
+            <div class="welcome-title">
+                {welcome_title}
+            </div>
+
+            <div class="welcome-text">
+                {welcome_text}
+            </div>
+
         </div>
-        ''',
+        """,
         unsafe_allow_html=True,
     )
 
@@ -530,67 +773,46 @@ def build_system_prompt():
     mode = st.session_state.mode
 
     prompt = (
-        "You are Chill Bro AI.\n\n"
-        f"Always communicate primarily in {language}, "
-        "unless the user asks for another language.\n\n"
-        "Be helpful, entertaining, friendly and concise.\n"
-        "Never pretend to know information you do not know.\n\n"
+        "You are Chill Bro AI.\n"
+        f"Respond primarily in {language} unless the user requests another language.\n"
+        "Be helpful, accurate, natural and concise.\n"
+        "Do not pretend to know information you do not know.\n"
         f"Current mode: {mode}\n"
     )
 
     if mode == "🤖 Chill Bro Chat":
 
-        personality = PERSONALITIES[
-            st.session_state.personality
-        ]
-
         prompt += (
             "\nPersonality:\n"
-            + personality
-            + "\n\n"
-            "Talk naturally like a bro. "
-            "Use emojis occasionally.\n"
+            + PERSONALITIES[
+                st.session_state.personality
+            ]
+            + "\nTalk naturally like a bro.\n"
         )
 
     elif mode == "📚 Study Helper":
 
-        tool = getattr(
-            st.session_state,
-            "study_tool",
-            "📖 Explain Topic",
-        )
-
         prompt += (
-            "\nYou are a study assistant.\n"
-            f"Selected study tool: {tool}\n\n"
-            "Give clear explanations.\n"
-            "Use simple examples.\n"
-            "Break difficult concepts into steps.\n"
-            "For quizzes, provide questions and answers.\n"
-            "For flashcards, use question and answer format.\n"
-            "For study plans, create realistic schedules.\n"
+            "\nAct as a study assistant.\n"
+            f"Selected tool: {st.session_state.study_tool}\n"
+            "Explain difficult concepts simply.\n"
+            "Use examples and structured answers.\n"
+            "For quizzes, separate questions and answers.\n"
+            "For flashcards, use question/answer format.\n"
+            "For study plans, make realistic schedules.\n"
         )
 
     else:
 
-        tool = getattr(
-            st.session_state,
-            "gaming_tool",
-            "🎯 Game Tips",
-        )
-
         prompt += (
-            "\nYou are a gaming assistant.\n"
-            f"Selected gaming tool: {tool}\n\n"
-            "Help with gameplay strategy, builds, loadouts, "
-            "weapons, characters, maps, missions, quests, "
-            "bosses, sensitivity, controls, rank improvement, "
-            "PC/mobile optimization and game recommendations.\n\n"
-            "If game information depends on a patch or version, "
-            "say that the exact version matters instead of "
-            "pretending outdated information is current.\n\n"
-            "Do not help with cheating, malware, account theft, "
-            "or harmful attacks against real people.\n"
+            "\nAct as a gaming assistant.\n"
+            f"Selected tool: {st.session_state.gaming_tool}\n"
+            "Help with gameplay, strategies, builds, loadouts, "
+            "weapons, characters, maps, missions, quests, bosses, "
+            "settings, sensitivity, ranks and optimization.\n"
+            "If advice depends on a game version or patch, say so.\n"
+            "Do not help with cheating, malware, account theft or "
+            "harmful attacks against real people.\n"
         )
 
     return prompt
@@ -606,231 +828,4 @@ def get_api_key():
     except Exception:
         return os.environ.get("OPENAI_API_KEY")
 
-# ============================================================
-# AI FUNCTION
-# ============================================================
-
-def ask_ai(user_message):
-
-    api_key = get_api_key()
-
-    if not api_key:
-        return (
-            "⚠️ Bro, `OPENAI_API_KEY` is missing. "
-            "Add it in Streamlit Secrets."
-        )
-
-    conversation = []
-
-    for message in st.session_state.messages[-20:]:
-
-        conversation.append(
-            {
-                "role": message["role"],
-                "content": message["content"],
-            }
-        )
-
-    conversation.append(
-        {
-            "role": "user",
-            "content": user_message,
-        }
-    )
-
-    payload = {
-        "model": MODEL,
-        "instructions": build_system_prompt(),
-        "input": conversation,
-    }
-
-    try:
-
-        response = requests.post(
-            "https://api.openai.com/v1/responses",
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-            },
-            json=payload,
-            timeout=120,
-        )
-
-        if response.status_code != 200:
-
-            try:
-                error_data = response.json()
-
-                error_message = (
-                    error_data
-                    .get("error", {})
-                    .get("message", response.text)
-                )
-
-            except Exception:
-
-                error_message = response.text
-
-            return f"⚠️ OpenAI error: {error_message}"
-
-        data = response.json()
-
-        if data.get("output_text"):
-            return data["output_text"]
-
-        output = data.get("output", [])
-        collected = []
-
-        for item in output:
-
-            if item.get("type") != "message":
-                continue
-
-            for content in item.get("content", []):
-
-                if content.get("type") == "output_text":
-
-                    text_value = content.get("text", "")
-
-                    if text_value:
-                        collected.append(text_value)
-
-        result = "\n".join(collected).strip()
-
-        if result:
-            return result
-
-        return "⚠️ Bro, the AI returned an empty response."
-
-    except requests.exceptions.Timeout:
-
-        return "⏳ Bro, the AI took too long. Try again."
-
-    except requests.exceptions.RequestException as error:
-
-        return f"🌐 Connection error: {error}"
-
-    except Exception as error:
-
-        return f"💀 Something went wrong: {error}"
-
-# ============================================================
-# CHAT HISTORY
-# ============================================================
-
-for message in st.session_state.messages:
-
-    if message["role"] == "user":
-
-        avatar = "😎"
-        label = "You"
-        card_class = "user-card"
-
-    else:
-
-        avatar = "🔥"
-        label = "Chill Bro AI"
-        card_class = "assistant-card"
-
-    safe_content = html.escape(
-        message["content"]
-    ).replace("\n", "<br>")
-
-    st.markdown(
-        f'''
-        <div class="chat-card {card_class}">
-            <b>{avatar} {label}</b>
-            <div style="margin-top:6px;">
-                {safe_content}
-            </div>
-        </div>
-        ''',
-        unsafe_allow_html=True,
-    )
-
-# ============================================================
-# CHAT INPUT
-# ============================================================
-
-placeholder = "Ask anything, bro... 🔥"
-
-if st.session_state.mode == "📚 Study Helper":
-
-    placeholder = "Ask your study question... 📚"
-
-elif st.session_state.mode == "🎮 Gaming Helper":
-
-    placeholder = "Ask your gaming question... 🎮"
-
-user_input = st.chat_input(placeholder)
-
-if user_input:
-
-    st.session_state.messages.append(
-        {
-            "role": "user",
-            "content": user_input,
-        }
-    )
-
-    safe_user_input = html.escape(user_input)
-
-    st.markdown(
-        f'''
-        <div class="chat-card user-card">
-            <b>😎 You</b>
-            <div style="margin-top:6px;">
-                {safe_user_input}
-            </div>
-        </div>
-        ''',
-        unsafe_allow_html=True,
-    )
-
-    with st.spinner("⚡ Bro is thinking..."):
-
-        answer = ask_ai(user_input)
-
-    st.session_state.messages.append(
-        {
-            "role": "assistant",
-            "content": answer,
-        }
-    )
-
-    safe_answer = html.escape(answer).replace(
-        "\n",
-        "<br>"
-    )
-
-    st.markdown(
-        f'''
-        <div class="chat-card assistant-card">
-            <b>🔥 Chill Bro AI</b>
-            <div style="margin-top:6px;">
-                {safe_answer}
-            </div>
-        </div>
-        ''',
-        unsafe_allow_html=True,
-    )
-
-    st.rerun()
-
-# ============================================================
-# FOOTER
-# ============================================================
-
-st.markdown(
-    '''
-    <div style="
-        text-align:center;
-        opacity:.55;
-        margin-top:35px;
-        padding:20px;
-    ">
-        🔥 Chill Bro AI • 🤖 AI • 📚 Study • 🎮 Gaming • 🌍 Multilingual
-    </div>
-    ''',
-    unsafe_allow_html=True,
-)
+# =======
