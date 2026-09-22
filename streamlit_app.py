@@ -4,10 +4,6 @@ import os
 import html
 import base64
 
-# ============================================================
-# CHILL BRO AI
-# ============================================================
-
 st.set_page_config(
     page_title="Chill Bro AI",
     page_icon="🔥",
@@ -17,16 +13,11 @@ st.set_page_config(
 
 MODEL = "gpt-5.6-luna"
 
-# ============================================================
-# 100+ LANGUAGES
-# ============================================================
-
 LANGUAGES = [
     "English", "Hindi", "Punjabi", "Nepali", "Urdu", "Bengali",
     "Tamil", "Telugu", "Marathi", "Gujarati", "Kannada", "Malayalam",
     "Odia", "Assamese", "Maithili", "Sanskrit", "Kashmiri", "Sindhi",
     "Konkani", "Dogri", "Manipuri", "Bodo", "Santali",
-
     "French", "Spanish", "German", "Italian", "Portuguese", "Russian",
     "Ukrainian", "Polish", "Dutch", "Swedish", "Norwegian", "Danish",
     "Finnish", "Icelandic", "Irish", "Welsh", "Greek", "Romanian",
@@ -34,55 +25,31 @@ LANGUAGES = [
     "Bosnian", "Slovenian", "Albanian", "Macedonian", "Lithuanian",
     "Latvian", "Estonian", "Maltese", "Catalan", "Basque", "Galician",
     "Luxembourgish", "Frisian", "Occitan", "Corsican",
-
     "Arabic", "Hebrew", "Persian", "Turkish", "Kurdish", "Armenian",
     "Georgian", "Azerbaijani", "Kazakh", "Uzbek", "Turkmen", "Kyrgyz",
     "Tajik", "Mongolian", "Pashto", "Dari",
-
     "Chinese", "Japanese", "Korean", "Vietnamese", "Thai", "Indonesian",
     "Malay", "Filipino", "Burmese", "Khmer", "Lao", "Sinhala",
     "Javanese", "Sundanese",
-
     "Swahili", "Amharic", "Somali", "Hausa", "Yoruba", "Igbo", "Zulu",
     "Xhosa", "Afrikaans", "Sesotho", "Setswana", "Shona", "Kinyarwanda",
-    "Malagasy",
-
-    "Samoan", "Tongan", "Fijian", "Maori", "Hawaiian",
+    "Malagasy", "Samoan", "Tongan", "Fijian", "Maori", "Hawaiian",
     "Haitian Creole", "Esperanto", "Latin",
 ]
 
-# ============================================================
-# PERSONALITIES
-# ============================================================
-
 PERSONALITIES = {
-    "😎 Chill Bro":
-        "Relaxed, friendly, casual and naturally funny.",
-
-    "😂 Funny":
-        "Playful, humorous and entertaining.",
-
-    "🧠 Smart":
-        "Precise, intelligent, logical and educational.",
-
-    "❤️ Lovely":
-        "Warm, kind, positive and supportive.",
-
-    "🤝 Best Friend":
-        "Talk naturally like a close best friend. Casual, honest and supportive.",
-
-    "💀 Extreme Toxic":
-        (
-            "Use playful fictional bro-style trash talk with strong profanity "
-            "such as fuck, shit, damn and dumbass when appropriate. "
-            "Keep it playful and non-threatening. "
-            "Never use hateful slurs, threats, violence or attacks on protected groups."
-        ),
+    "😎 Chill Bro": "Relaxed, friendly, casual and naturally funny.",
+    "😂 Funny": "Playful, humorous and entertaining.",
+    "🧠 Smart": "Precise, intelligent, logical and educational.",
+    "❤️ Lovely": "Warm, kind, positive and supportive.",
+    "🤝 Best Friend": "Talk naturally like a close best friend. Casual, honest and supportive.",
+    "💀 Extreme Toxic": (
+        "Use playful fictional bro-style trash talk with strong profanity "
+        "such as fuck, shit, damn and dumbass when appropriate. "
+        "Keep it playful and non-threatening. "
+        "Never use hateful slurs, threats, violence or attacks on protected groups."
+    ),
 }
-
-# ============================================================
-# STUDY TOOLS
-# ============================================================
 
 STUDY_TOOLS = [
     "📖 Explain Topic",
@@ -93,10 +60,6 @@ STUDY_TOOLS = [
     "📅 Study Plan",
     "🔍 Exam Preparation",
 ]
-
-# ============================================================
-# GAMING TOOLS
-# ============================================================
 
 GAMING_TOOLS = [
     "🎯 Game Tips",
@@ -113,10 +76,6 @@ GAMING_TOOLS = [
     "🎲 Game Recommendation",
 ]
 
-# ============================================================
-# THEMES
-# ============================================================
-
 THEMES = {
     "🌌 Neon Night": {
         "bg": "#070b18",
@@ -128,7 +87,6 @@ THEMES = {
         "muted": "#94a3b8",
         "input": "#0b1222",
     },
-
     "💜 Purple": {
         "bg": "#0b0714",
         "surface": "#171025",
@@ -139,7 +97,6 @@ THEMES = {
         "muted": "#c4b5fd",
         "input": "#120b20",
     },
-
     "🌊 Ocean": {
         "bg": "#061218",
         "surface": "#0b2029",
@@ -150,7 +107,6 @@ THEMES = {
         "muted": "#94a3b8",
         "input": "#081a22",
     },
-
     "💚 Matrix": {
         "bg": "#050b07",
         "surface": "#0b1710",
@@ -161,7 +117,6 @@ THEMES = {
         "muted": "#86a98f",
         "input": "#07130b",
     },
-
     "🔥 Fire": {
         "bg": "#120806",
         "surface": "#21100a",
@@ -172,7 +127,6 @@ THEMES = {
         "muted": "#fdba74",
         "input": "#180b07",
     },
-
     "🌅 Sunset": {
         "bg": "#120a12",
         "surface": "#211020",
@@ -183,7 +137,6 @@ THEMES = {
         "muted": "#fda4af",
         "input": "#180b14",
     },
-
     "🖤 Dark": {
         "bg": "#080808",
         "surface": "#121212",
@@ -195,10 +148,6 @@ THEMES = {
         "input": "#101010",
     },
 }
-
-# ============================================================
-# SESSION STATE
-# ============================================================
 
 defaults = {
     "messages": [],
@@ -280,14 +229,12 @@ html, body, [class*="css"] {{
     width: 58px;
     height: 58px;
     border-radius: 18px;
-    background:
-        linear-gradient(
-            135deg,
-            {theme["primary"]},
-            {theme["secondary"]}
-        );
-    box-shadow:
-        0 8px 35px {theme["primary"]}30;
+    background: linear-gradient(
+        135deg,
+        {theme["primary"]},
+        {theme["secondary"]}
+    );
+    box-shadow: 0 8px 35px {theme["primary"]}30;
     font-size: 30px;
     margin-bottom: 14px;
 }}
@@ -352,14 +299,10 @@ html, body, [class*="css"] {{
     line-height: 1.6;
 }}
 
-/* ============================================================
-   WHATSAPP-STYLE CHAT
-   ============================================================ */
-
 .chat-row {{
     display: flex;
     width: 100%;
-    margin: 5px 0;
+    margin: 6px 0;
 }}
 
 .chat-row.user {{
@@ -371,11 +314,10 @@ html, body, [class*="css"] {{
 }}
 
 .chat-bubble {{
-    position: relative;
     max-width: min(75%, 680px);
-    padding: 9px 12px 8px;
+    padding: 10px 13px;
     border-radius: 14px;
-    line-height: 1.48;
+    line-height: 1.5;
     font-size: 15px;
     overflow-wrap: anywhere;
     box-shadow: 0 1px 2px rgba(0,0,0,.18);
@@ -393,14 +335,6 @@ html, body, [class*="css"] {{
     border-bottom-left-radius: 4px;
 }}
 
-.chat-label {{
-    display: none;
-}}
-
-/* ============================================================
-   CHAT INPUT
-   ============================================================ */
-
 [data-testid="stChatInput"] {{
     background: transparent !important;
 }}
@@ -409,9 +343,6 @@ html, body, [class*="css"] {{
     background: {theme["input"]} !important;
     border: 1px solid {theme["primary"]}45 !important;
     border-radius: 18px !important;
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.25),
-        0 0 0 1px {theme["primary"]}08 !important;
 }}
 
 [data-testid="stChatInput"] textarea {{
@@ -426,15 +357,6 @@ html, body, [class*="css"] {{
     color: {theme["muted"]} !important;
     -webkit-text-fill-color: {theme["muted"]} !important;
     opacity: 1 !important;
-}}
-
-[data-testid="stChatInput"] textarea:focus {{
-    color: {theme["text"]} !important;
-    -webkit-text-fill-color: {theme["text"]} !important;
-}}
-
-[data-testid="stChatInput"] button {{
-    color: {theme["primary"]} !important;
 }}
 
 .stButton > button {{
@@ -459,10 +381,6 @@ div[data-baseweb="select"] span {{
     color: {theme["text"]} !important;
 }}
 
-[data-testid="stRadio"] label {{
-    color: {theme["text"]} !important;
-}}
-
 .footer {{
     text-align: center;
     color: {theme["muted"]};
@@ -479,12 +397,12 @@ div[data-baseweb="select"] span {{
     .chat-bubble {{
         max-width: 85%;
         font-size: 15px;
-        padding: 9px 11px 8px;
     }}
 
     .app-title {{
         font-size: 34px;
     }}
+
 }}
 
 </style>
@@ -601,7 +519,7 @@ with st.sidebar:
         st.rerun()
 
 # ============================================================
-# BACKGROUND MUSIC
+# MUSIC
 # ============================================================
 
 def play_background_music():
@@ -609,9 +527,12 @@ def play_background_music():
     filename = "7week 3days.mp3"
 
     if not os.path.exists(filename):
+
         st.warning(
-            "🎵 Upload `7week 3days.mp3` to the same GitHub folder as this file."
+            "🎵 `7week 3days.mp3` was not found. "
+            "Put it in the same GitHub folder as `streamlit_app.py`."
         )
+
         return
 
     try:
@@ -643,7 +564,9 @@ def play_background_music():
             </audio>
 
             <script>
-            document.querySelectorAll("audio").forEach(function(audio) {{
+            const audios = document.querySelectorAll("audio");
+
+            audios.forEach(function(audio) {{
                 audio.volume = {volume};
             }});
             </script>
@@ -665,28 +588,25 @@ if st.session_state.music_on:
 if st.session_state.mode == "🤖 Chill Bro Chat":
 
     title = "Chill Bro <span>AI</span>"
-    subtitle = (
-        "Your personal AI assistant, study partner and gaming bro."
-    )
+    subtitle = "Your personal AI assistant, study partner and gaming bro."
     badge = "🤖 AI CHAT"
 
 elif st.session_state.mode == "📚 Study Helper":
 
     title = "Study <span>Helper</span>"
-    subtitle = (
-        "Learn faster with explanations, quizzes and study tools."
-    )
+    subtitle = "Learn faster with explanations, quizzes and study tools."
     badge = "📚 STUDY MODE"
 
 else:
 
     title = "Gaming <span>Helper</span>"
-    subtitle = (
-        "Strategies, builds, settings and gaming advice."
-    )
+    subtitle = "Strategies, builds, settings and gaming advice."
     badge = "🎮 GAMING MODE"
 
-st.markdown(
+# IMPORTANT:
+# Use st.html instead of st.markdown for HTML UI.
+
+st.html(
     f"""
     <div class="app-header">
 
@@ -705,8 +625,7 @@ st.markdown(
         </div>
 
     </div>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
 # ============================================================
@@ -742,7 +661,7 @@ if not st.session_state.messages:
             "missions, bosses or game recommendations."
         )
 
-    st.markdown(
+    st.html(
         f"""
         <div class="welcome-card">
 
@@ -759,8 +678,7 @@ if not st.session_state.messages:
             </div>
 
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 # ============================================================
@@ -784,9 +702,7 @@ def build_system_prompt():
 
         prompt += (
             "\nPersonality:\n"
-            + PERSONALITIES[
-                st.session_state.personality
-            ]
+            + PERSONALITIES[st.session_state.personality]
             + "\nTalk naturally like a bro.\n"
         )
 
@@ -828,4 +744,198 @@ def get_api_key():
     except Exception:
         return os.environ.get("OPENAI_API_KEY")
 
-# =======
+# ============================================================
+# OPENAI
+# ============================================================
+
+def ask_ai(user_message):
+
+    api_key = get_api_key()
+
+    if not api_key:
+
+        return (
+            "⚠️ `OPENAI_API_KEY` is missing. "
+            "Add it in Streamlit Secrets."
+        )
+
+    conversation = []
+
+    for message in st.session_state.messages[-20:]:
+
+        conversation.append(
+            {
+                "role": message["role"],
+                "content": message["content"],
+            }
+        )
+
+    conversation.append(
+        {
+            "role": "user",
+            "content": user_message,
+        }
+    )
+
+    payload = {
+        "model": MODEL,
+        "instructions": build_system_prompt(),
+        "input": conversation,
+    }
+
+    try:
+
+        response = requests.post(
+            "https://api.openai.com/v1/responses",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json=payload,
+            timeout=120,
+        )
+
+        if response.status_code != 200:
+
+            try:
+
+                data = response.json()
+
+                error_message = (
+                    data
+                    .get("error", {})
+                    .get("message", response.text)
+                )
+
+            except Exception:
+
+                error_message = response.text
+
+            return f"⚠️ OpenAI error: {error_message}"
+
+        data = response.json()
+
+        if data.get("output_text"):
+            return data["output_text"]
+
+        collected = []
+
+        for item in data.get("output", []):
+
+            if item.get("type") != "message":
+                continue
+
+            for content in item.get("content", []):
+
+                if content.get("type") == "output_text":
+
+                    value = content.get("text", "")
+
+                    if value:
+                        collected.append(value)
+
+        result = "\n".join(collected).strip()
+
+        if result:
+            return result
+
+        return "⚠️ The AI returned an empty response."
+
+    except requests.exceptions.Timeout:
+
+        return "⏳ The request timed out. Try again."
+
+    except requests.exceptions.RequestException as error:
+
+        return f"🌐 Connection error: {error}"
+
+    except Exception as error:
+
+        return f"⚠️ Something went wrong: {error}"
+
+# ============================================================
+# CHAT
+# ============================================================
+
+for message in st.session_state.messages:
+
+    content = (
+        html.escape(message["content"])
+        .replace("\n", "<br>")
+    )
+
+    if message["role"] == "user":
+
+        st.html(
+            f"""
+            <div class="chat-row user">
+                <div class="chat-bubble user-bubble">
+                    {content}
+                </div>
+            </div>
+            """
+        )
+
+    else:
+
+        st.html(
+            f"""
+            <div class="chat-row ai">
+                <div class="chat-bubble ai-bubble">
+                    {content}
+                </div>
+            </div>
+            """
+        )
+
+# ============================================================
+# INPUT
+# ============================================================
+
+if st.session_state.mode == "📚 Study Helper":
+
+    placeholder = "Ask your study question..."
+
+elif st.session_state.mode == "🎮 Gaming Helper":
+
+    placeholder = "Ask your gaming question..."
+
+else:
+
+    placeholder = "Message Chill Bro AI..."
+
+user_input = st.chat_input(placeholder)
+
+if user_input:
+
+    st.session_state.messages.append(
+        {
+            "role": "user",
+            "content": user_input,
+        }
+    )
+
+    with st.spinner("Thinking..."):
+
+        answer = ask_ai(user_input)
+
+    st.session_state.messages.append(
+        {
+            "role": "assistant",
+            "content": answer,
+        }
+    )
+
+    st.rerun()
+
+# ============================================================
+# FOOTER
+# ============================================================
+
+st.html(
+    """
+    <div class="footer">
+        🔥 Chill Bro AI • Chat • Study • Gaming • 100+ Languages
+    </div>
+    """
+)
