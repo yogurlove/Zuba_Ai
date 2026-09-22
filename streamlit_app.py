@@ -5,7 +5,7 @@ import os
 import html
 
 # ============================================================
-# 🎮🔥 CHILL BRO AI — ALL-IN-ONE STREAMLIT APP
+# 🎮🔥 CHILL BRO AI — ALL IN ONE
 # ============================================================
 
 st.set_page_config(
@@ -14,10 +14,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-
-# ============================================================
-# CONFIG
-# ============================================================
 
 MODEL = "gpt-5.6-luna"
 
@@ -30,35 +26,19 @@ LANGUAGES = [
 ]
 
 PERSONALITIES = {
-    "😎 Chill Bro":
-        "Relaxed, friendly, funny and casual like a cool friend.",
-
-    "😂 Funny":
-        "Humorous, playful and entertaining.",
-
-    "🧠 Smart":
-        "Intelligent, clear, precise and educational.",
-
-    "❤️ Lovely":
-        "Warm, kind, positive and supportive.",
-
-    "🤝 Best Friend":
-        "Talk naturally like a close best friend. Casual, honest and supportive.",
-
-    "💀 Extreme Toxic":
-        """
-        Use a chaotic, profanity-heavy fictional bro-style personality.
-        Strong profanity and vulgar slang are allowed for playful trash-talk.
-        You may use words such as fuck, shit, damn, dumbass and similar
-        exaggerated insults.
-
-        Keep it playful and non-threatening.
-        Do not use hateful slurs.
-        Do not threaten violence.
-        Do not encourage real-world harassment.
-        Do not target protected groups.
-        Do not turn the conversation into genuine abuse.
-        """
+    "😎 Chill Bro": "Relaxed, friendly, funny and casual like a cool friend.",
+    "😂 Funny": "Humorous, playful and entertaining.",
+    "🧠 Smart": "Intelligent, clear, precise and educational.",
+    "❤️ Lovely": "Warm, kind, positive and supportive.",
+    "🤝 Best Friend": "Talk naturally like a close best friend. Casual, honest and supportive.",
+    "💀 Extreme Toxic": (
+        "Use a chaotic, profanity-heavy fictional bro-style personality. "
+        "Strong profanity and vulgar slang are allowed for playful trash-talk. "
+        "You can use words such as fuck, shit, damn and dumbass. "
+        "Keep it playful and non-threatening. "
+        "Do not use hateful slurs, threats, violence, harassment or attacks "
+        "against protected groups."
+    ),
 }
 
 STUDY_TOOLS = [
@@ -144,166 +124,165 @@ bg, primary, secondary = THEMES[st.session_state.theme]
 # CSS
 # ============================================================
 
-st.markdown(
-    f"""
-    <style>
+css = f'''
+<style>
 
-    .stApp {{
-        background:
-            radial-gradient(circle at 15% 20%, {primary}22 0%, transparent 28%),
-            radial-gradient(circle at 85% 80%, {secondary}22 0%, transparent 28%),
-            linear-gradient(135deg, {bg}, #03030a 70%);
-        color: white;
+.stApp {{
+    background:
+        radial-gradient(circle at 15% 20%, {primary}22 0%, transparent 28%),
+        radial-gradient(circle at 85% 80%, {secondary}22 0%, transparent 28%),
+        linear-gradient(135deg, {bg}, #03030a 70%);
+    color: white;
+}}
+
+[data-testid="stSidebar"] {{
+    background: linear-gradient(180deg, {bg}, #03030a);
+    border-right: 1px solid {primary}55;
+}}
+
+.main-title {{
+    text-align: center;
+    font-size: 48px;
+    font-weight: 900;
+    color: {primary};
+    text-shadow:
+        0 0 8px {primary},
+        0 0 20px {primary},
+        0 0 40px {secondary};
+    animation: titleGlow 2s infinite alternate;
+}}
+
+.subtitle {{
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    opacity: .85;
+    margin-bottom: 20px;
+}}
+
+.anime-face {{
+    width: 110px;
+    height: 110px;
+    margin: 10px auto 20px auto;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 35% 35%, white 0 4%, transparent 5%),
+        radial-gradient(circle at 65% 35%, white 0 4%, transparent 5%),
+        linear-gradient(145deg, {primary}, {secondary});
+    border: 4px solid white;
+    box-shadow:
+        0 0 15px {primary},
+        0 0 35px {secondary};
+    animation: floatFace 2.5s infinite ease-in-out;
+    position: relative;
+}}
+
+.anime-face:after {{
+    content: "⌣";
+    position: absolute;
+    left: 39px;
+    top: 52px;
+    font-size: 30px;
+    color: white;
+}}
+
+.energy-ring {{
+    width: 145px;
+    height: 145px;
+    border-radius: 50%;
+    border: 2px solid {primary};
+    margin: -138px auto 35px auto;
+    opacity: .5;
+    animation: ring 2s infinite linear;
+}}
+
+.chat-card {{
+    padding: 12px 16px;
+    border-radius: 18px;
+    margin: 8px 0;
+    border: 1px solid {primary}44;
+    background: rgba(255,255,255,.04);
+    animation: messageIn .35s ease;
+}}
+
+.user-card {{
+    border-left: 4px solid {secondary};
+}}
+
+.assistant-card {{
+    border-left: 4px solid {primary};
+}}
+
+.sticker {{
+    display: inline-block;
+    font-size: 35px;
+    animation: sticker 1.8s infinite ease-in-out;
+    margin: 5px;
+}}
+
+.gaming-box {{
+    padding: 18px;
+    border-radius: 20px;
+    border: 1px solid {primary}66;
+    background: linear-gradient(135deg, {primary}12, {secondary}12);
+    box-shadow: 0 0 25px {primary}22;
+    margin-bottom: 15px;
+}}
+
+@keyframes titleGlow {{
+    from {{
+        text-shadow: 0 0 8px {primary};
     }}
-
-    [data-testid="stSidebar"] {{
-        background:
-            linear-gradient(180deg, {bg}, #03030a);
-        border-right: 1px solid {primary}55;
-    }}
-
-    .main-title {{
-        text-align: center;
-        font-size: 48px;
-        font-weight: 900;
-        color: {primary};
+    to {{
         text-shadow:
-            0 0 8px {primary},
-            0 0 20px {primary},
-            0 0 40px {secondary};
-        animation: titleGlow 2s infinite alternate;
+            0 0 10px {primary},
+            0 0 30px {secondary},
+            0 0 50px {primary};
     }}
+}}
 
-    .subtitle {{
-        text-align: center;
-        color: white;
-        font-size: 18px;
-        opacity: .85;
-        margin-bottom: 20px;
+@keyframes floatFace {{
+    0%,100% {{
+        transform: translateY(0px);
     }}
-
-    .anime-face {{
-        width: 110px;
-        height: 110px;
-        margin: 10px auto 20px auto;
-        border-radius: 50%;
-        background:
-            radial-gradient(circle at 35% 35%, white 0 4%, transparent 5%),
-            radial-gradient(circle at 65% 35%, white 0 4%, transparent 5%),
-            linear-gradient(145deg, {primary}, {secondary});
-        border: 4px solid white;
-        box-shadow:
-            0 0 15px {primary},
-            0 0 35px {secondary};
-        animation: floatFace 2.5s infinite ease-in-out;
-        position: relative;
+    50% {{
+        transform: translateY(-10px);
     }}
+}}
 
-    .anime-face:after {{
-        content: "⌣";
-        position: absolute;
-        left: 39px;
-        top: 52px;
-        font-size: 30px;
-        color: white;
+@keyframes ring {{
+    from {{
+        transform: rotate(0deg) scale(.9);
     }}
-
-    .energy-ring {{
-        width: 145px;
-        height: 145px;
-        border-radius: 50%;
-        border: 2px solid {primary};
-        margin: -138px auto 35px auto;
-        opacity: .5;
-        animation: ring 2s infinite linear;
+    to {{
+        transform: rotate(360deg) scale(1.05);
     }}
+}}
 
-    .chat-card {{
-        padding: 12px 16px;
-        border-radius: 18px;
-        margin: 8px 0;
-        border: 1px solid {primary}44;
-        background: rgba(255,255,255,.04);
-        animation: messageIn .35s ease;
+@keyframes messageIn {{
+    from {{
+        opacity: 0;
+        transform: translateY(8px);
     }}
-
-    .user-card {{
-        border-left: 4px solid {secondary};
+    to {{
+        opacity: 1;
+        transform: translateY(0);
     }}
+}}
 
-    .assistant-card {{
-        border-left: 4px solid {primary};
+@keyframes sticker {{
+    0%,100% {{
+        transform: rotate(-8deg) scale(1);
     }}
-
-    .thinking {{
-        color: {primary};
-        font-weight: bold;
-        animation: pulse 1s infinite;
+    50% {{
+        transform: rotate(8deg) scale(1.15);
     }}
+}}
 
-    .sticker {{
-        display: inline-block;
-        font-size: 35px;
-        animation: sticker 1.8s infinite ease-in-out;
-        margin: 5px;
-    }}
+</style>
+'''
 
-    .gaming-box {{
-        padding: 18px;
-        border-radius: 20px;
-        border: 1px solid {primary}66;
-        background: linear-gradient(135deg, {primary}12, {secondary}12);
-        box-shadow: 0 0 25px {primary}22;
-        margin-bottom: 15px;
-    }}
-
-    @keyframes titleGlow {{
-        from {{
-            text-shadow: 0 0 8px {primary};
-        }}
-        to {{
-            text-shadow:
-                0 0 10px {primary},
-                0 0 30px {secondary},
-                0 0 50px {primary};
-        }}
-    }}
-
-    @keyframes floatFace {{
-        0%,100% {{ transform: translateY(0px); }}
-        50% {{ transform: translateY(-10px); }}
-    }}
-
-    @keyframes ring {{
-        from {{ transform: rotate(0deg) scale(.9); }}
-        to {{ transform: rotate(360deg) scale(1.05); }}
-    }}
-
-    @keyframes messageIn {{
-        from {{
-            opacity: 0;
-            transform: translateY(8px);
-        }}
-        to {{
-            opacity: 1;
-            transform: translateY(0);
-        }}
-    }}
-
-    @keyframes pulse {{
-        0%,100% {{ opacity: .35; }}
-        50% {{ opacity: 1; }}
-    }}
-
-    @keyframes sticker {{
-        0%,100% {{ transform: rotate(-8deg) scale(1); }}
-        50% {{ transform: rotate(8deg) scale(1.15); }}
-    }}
-
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown(css, unsafe_allow_html=True)
 
 # ============================================================
 # SIDEBAR
@@ -313,32 +292,27 @@ with st.sidebar:
 
     st.markdown("## 🔥 Chill Bro AI")
 
-    mode = st.radio(
-        "Choose Mode",
-        [
-            "🤖 Chill Bro Chat",
-            "📚 Study Helper",
-            "🎮 Gaming Helper",
-        ],
-        index=[
-            "🤖 Chill Bro Chat",
-            "📚 Study Helper",
-            "🎮 Gaming Helper",
-        ].index(st.session_state.mode),
-    )
+    modes = [
+        "🤖 Chill Bro Chat",
+        "📚 Study Helper",
+        "🎮 Gaming Helper",
+    ]
 
-    st.session_state.mode = mode
+    st.session_state.mode = st.radio(
+        "Choose Mode",
+        modes,
+        index=modes.index(st.session_state.mode),
+    )
 
     st.markdown("---")
 
+    theme_names = list(THEMES.keys())
+
     st.session_state.theme = st.selectbox(
         "🎨 Theme",
-        list(THEMES.keys()),
-        index=list(THEMES.keys()).index(st.session_state.theme),
+        theme_names,
+        index=theme_names.index(st.session_state.theme),
     )
-
-    if st.session_state.theme == "🎨 Custom":
-        pass
 
     st.session_state.language = st.selectbox(
         "🌍 Language",
@@ -346,17 +320,19 @@ with st.sidebar:
         index=LANGUAGES.index(st.session_state.language),
     )
 
-    if mode == "🤖 Chill Bro Chat":
+    if st.session_state.mode == "🤖 Chill Bro Chat":
+
+        personality_names = list(PERSONALITIES.keys())
 
         st.session_state.personality = st.selectbox(
             "🎭 Personality",
-            list(PERSONALITIES.keys()),
-            index=list(PERSONALITIES.keys()).index(
+            personality_names,
+            index=personality_names.index(
                 st.session_state.personality
             ),
         )
 
-    elif mode == "📚 Study Helper":
+    elif st.session_state.mode == "📚 Study Helper":
 
         st.session_state.study_tool = st.selectbox(
             "📚 Study Tool",
@@ -385,10 +361,10 @@ with st.sidebar:
 
     st.session_state.music_volume = st.slider(
         "🔊 Volume",
-        0.0,
-        1.0,
-        st.session_state.music_volume,
-        0.05,
+        min_value=0.0,
+        max_value=1.0,
+        value=st.session_state.music_volume,
+        step=0.05,
     )
 
     st.session_state.sound_on = st.toggle(
@@ -411,36 +387,52 @@ with st.sidebar:
 # ============================================================
 
 def play_local_audio(filename, autoplay=False, loop=False, volume=0.5):
+
     if not os.path.exists(filename):
+        st.warning(
+            f"🎵 Add `{filename}` to the same folder as this app "
+            f"to use this audio."
+        )
         return
 
     try:
-        with open(filename, "rb") as f:
-            data = base64.b64encode(f.read()).decode()
 
-        mime = "audio/mpeg"
+        with open(filename, "rb") as audio_file:
+            audio_data = base64.b64encode(
+                audio_file.read()
+            ).decode()
 
-        auto = "autoplay" if autoplay else ""
-        loop_attr = "loop" if loop else ""
+        autoplay_text = "autoplay" if autoplay else ""
+        loop_text = "loop" if loop else ""
+
+        audio_html = f'''
+        <audio
+            controls
+            {autoplay_text}
+            {loop_text}
+            style="width:100%;"
+        >
+            <source
+                src="data:audio/mpeg;base64,{audio_data}"
+                type="audio/mpeg"
+            >
+        </audio>
+
+        <script>
+        const audioElements = document.querySelectorAll("audio");
+        audioElements.forEach(function(audio) {{
+            audio.volume = {volume};
+        }});
+        </script>
+        '''
 
         st.markdown(
-            f"""
-            <audio controls {auto} {loop_attr}
-                style="width:100%;"
-                volume="{volume}">
-                <source src="data:{mime};base64,{data}" type="{mime}">
-            </audio>
-            <script>
-            const audios = document.querySelectorAll("audio");
-            audios.forEach(a => {{
-                a.volume = {volume};
-            }});
-            </script>
-            """,
+            audio_html,
             unsafe_allow_html=True,
         )
+
     except Exception:
-        pass
+        st.warning(f"Could not load `{filename}`.")
 
 
 if st.session_state.music_on:
@@ -464,14 +456,17 @@ if st.session_state.sound_on:
 # ============================================================
 
 if st.session_state.mode == "🤖 Chill Bro Chat":
+
     title = "🔥 Chill Bro AI"
     subtitle = "⚡ Your anime-powered AI bro 😎"
 
 elif st.session_state.mode == "📚 Study Helper":
+
     title = "📚 Study Helper"
     subtitle = "✨ Train your brain like an anime protagonist 🧠🔥"
 
 else:
+
     title = "🎮 Gaming Helper"
     subtitle = "⚔️ Level up your gaming skills, bro 🔥"
 
@@ -485,12 +480,20 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.markdown('<div class="anime-face"></div>', unsafe_allow_html=True)
-st.markdown('<div class="energy-ring"></div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="anime-face"></div>',
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    '<div class="energy-ring"></div>',
+    unsafe_allow_html=True,
+)
 
 if st.session_state.stickers_on:
+
     st.markdown(
-        """
+        '''
         <div style="text-align:center;">
             <span class="sticker">🔥</span>
             <span class="sticker">⚡</span>
@@ -498,13 +501,14 @@ if st.session_state.stickers_on:
             <span class="sticker">😎</span>
             <span class="sticker">💀</span>
         </div>
-        """,
+        ''',
         unsafe_allow_html=True,
     )
 
 if st.session_state.gif_on:
+
     st.markdown(
-        """
+        '''
         <div style="text-align:center;margin:10px;">
             <img
                 src="https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif"
@@ -512,7 +516,7 @@ if st.session_state.gif_on:
                 style="border-radius:20px;"
             >
         </div>
-        """,
+        ''',
         unsafe_allow_html=True,
     )
 
@@ -523,36 +527,32 @@ if st.session_state.gif_on:
 def build_system_prompt():
 
     language = st.session_state.language
+    mode = st.session_state.mode
 
-    base = f"""
-You are Chill Bro AI.
+    prompt = (
+        "You are Chill Bro AI.\n\n"
+        f"Always communicate primarily in {language}, "
+        "unless the user asks for another language.\n\n"
+        "Be helpful, entertaining, friendly and concise.\n"
+        "Never pretend to know information you do not know.\n\n"
+        f"Current mode: {mode}\n"
+    )
 
-Always communicate primarily in {language} unless the user asks for another language.
-
-You are helpful, entertaining, friendly and concise.
-
-Never pretend to have information you do not have.
-
-Current application mode:
-{st.session_state.mode}
-"""
-
-    if st.session_state.mode == "🤖 Chill Bro Chat":
+    if mode == "🤖 Chill Bro Chat":
 
         personality = PERSONALITIES[
             st.session_state.personality
         ]
 
-        base += f"""
+        prompt += (
+            "\nPersonality:\n"
+            + personality
+            + "\n\n"
+            "Talk naturally like a bro. "
+            "Use emojis occasionally.\n"
+        )
 
-Personality:
-{personality}
-
-Talk naturally like a bro.
-Use emojis occasionally.
-"""
-
-    elif st.session_state.mode == "📚 Study Helper":
+    elif mode == "📚 Study Helper":
 
         tool = getattr(
             st.session_state,
@@ -560,20 +560,16 @@ Use emojis occasionally.
             "📖 Explain Topic",
         )
 
-        base += f"""
-
-You are currently acting as a study assistant.
-
-Selected study tool:
-{tool}
-
-Give clear explanations.
-Use examples.
-Break difficult concepts into simple steps.
-For quizzes, provide questions and answers separately when useful.
-For flashcards, use question/answer format.
-For study plans, make realistic schedules.
-"""
+        prompt += (
+            "\nYou are a study assistant.\n"
+            f"Selected study tool: {tool}\n\n"
+            "Give clear explanations.\n"
+            "Use simple examples.\n"
+            "Break difficult concepts into steps.\n"
+            "For quizzes, provide questions and answers.\n"
+            "For flashcards, use question and answer format.\n"
+            "For study plans, create realistic schedules.\n"
+        )
 
     else:
 
@@ -583,41 +579,24 @@ For study plans, make realistic schedules.
             "🎯 Game Tips",
         )
 
-        base += f"""
+        prompt += (
+            "\nYou are a gaming assistant.\n"
+            f"Selected gaming tool: {tool}\n\n"
+            "Help with gameplay strategy, builds, loadouts, "
+            "weapons, characters, maps, missions, quests, "
+            "bosses, sensitivity, controls, rank improvement, "
+            "PC/mobile optimization and game recommendations.\n\n"
+            "If game information depends on a patch or version, "
+            "say that the exact version matters instead of "
+            "pretending outdated information is current.\n\n"
+            "Do not help with cheating, malware, account theft, "
+            "or harmful attacks against real people.\n"
+        )
 
-You are currently acting as a gaming assistant.
-
-Selected gaming tool:
-{tool}
-
-Help with:
-- gameplay strategy
-- builds
-- loadouts
-- weapons
-- characters
-- maps
-- missions
-- quests
-- bosses
-- sensitivity
-- controls
-- rank improvement
-- PC/mobile optimization
-- game recommendations
-
-If a game has different patches or versions, mention that exact current
-version information may matter rather than pretending old information is current.
-
-Do not help with cheating, malware, account theft, exploits against real
-people, or other harmful activity.
-"""
-
-    return base
-
+    return prompt
 
 # ============================================================
-# OPENAI API
+# API KEY
 # ============================================================
 
 def get_api_key():
@@ -627,6 +606,9 @@ def get_api_key():
     except Exception:
         return os.environ.get("OPENAI_API_KEY")
 
+# ============================================================
+# AI FUNCTION
+# ============================================================
 
 def ask_ai(user_message):
 
@@ -641,6 +623,7 @@ def ask_ai(user_message):
     conversation = []
 
     for message in st.session_state.messages[-20:]:
+
         conversation.append(
             {
                 "role": message["role"],
@@ -677,14 +660,15 @@ def ask_ai(user_message):
 
             try:
                 error_data = response.json()
-                error_message = error_data.get(
-                    "error",
-                    {}
-                ).get(
-                    "message",
-                    response.text
+
+                error_message = (
+                    error_data
+                    .get("error", {})
+                    .get("message", response.text)
                 )
+
             except Exception:
+
                 error_message = response.text
 
             return f"⚠️ OpenAI error: {error_message}"
@@ -695,7 +679,6 @@ def ask_ai(user_message):
             return data["output_text"]
 
         output = data.get("output", [])
-
         collected = []
 
         for item in output:
@@ -706,9 +689,11 @@ def ask_ai(user_message):
             for content in item.get("content", []):
 
                 if content.get("type") == "output_text":
-                    collected.append(
-                        content.get("text", "")
-                    )
+
+                    text_value = content.get("text", "")
+
+                    if text_value:
+                        collected.append(text_value)
 
         result = "\n".join(collected).strip()
 
@@ -718,14 +703,16 @@ def ask_ai(user_message):
         return "⚠️ Bro, the AI returned an empty response."
 
     except requests.exceptions.Timeout:
+
         return "⏳ Bro, the AI took too long. Try again."
 
-    except requests.exceptions.RequestException as e:
-        return f"🌐 Connection error: {e}"
+    except requests.exceptions.RequestException as error:
 
-    except Exception as e:
-        return f"💀 Something went wrong: {e}"
+        return f"🌐 Connection error: {error}"
 
+    except Exception as error:
+
+        return f"💀 Something went wrong: {error}"
 
 # ============================================================
 # CHAT HISTORY
@@ -733,31 +720,31 @@ def ask_ai(user_message):
 
 for message in st.session_state.messages:
 
-    role = message["role"]
+    if message["role"] == "user":
 
-    if role == "user":
         avatar = "😎"
         label = "You"
         card_class = "user-card"
+
     else:
+
         avatar = "🔥"
         label = "Chill Bro AI"
         card_class = "assistant-card"
 
-    safe_content = html.escape(message["content"]).replace(
-        "\n",
-        "<br>"
-    )
+    safe_content = html.escape(
+        message["content"]
+    ).replace("\n", "<br>")
 
     st.markdown(
-        f"""
+        f'''
         <div class="chat-card {card_class}">
             <b>{avatar} {label}</b>
             <div style="margin-top:6px;">
                 {safe_content}
             </div>
         </div>
-        """,
+        ''',
         unsafe_allow_html=True,
     )
 
@@ -768,9 +755,11 @@ for message in st.session_state.messages:
 placeholder = "Ask anything, bro... 🔥"
 
 if st.session_state.mode == "📚 Study Helper":
+
     placeholder = "Ask your study question... 📚"
 
 elif st.session_state.mode == "🎮 Gaming Helper":
+
     placeholder = "Ask your gaming question... 🎮"
 
 user_input = st.chat_input(placeholder)
@@ -784,15 +773,17 @@ if user_input:
         }
     )
 
+    safe_user_input = html.escape(user_input)
+
     st.markdown(
-        f"""
+        f'''
         <div class="chat-card user-card">
             <b>😎 You</b>
             <div style="margin-top:6px;">
-                {html.escape(user_input)}
+                {safe_user_input}
             </div>
         </div>
-        """,
+        ''',
         unsafe_allow_html=True,
     )
 
@@ -807,9 +798,39 @@ if user_input:
         }
     )
 
+    safe_answer = html.escape(answer).replace(
+        "\n",
+        "<br>"
+    )
+
     st.markdown(
-        f"""
+        f'''
         <div class="chat-card assistant-card">
             <b>🔥 Chill Bro AI</b>
             <div style="margin-top:6px;">
-      
+                {safe_answer}
+            </div>
+        </div>
+        ''',
+        unsafe_allow_html=True,
+    )
+
+    st.rerun()
+
+# ============================================================
+# FOOTER
+# ============================================================
+
+st.markdown(
+    '''
+    <div style="
+        text-align:center;
+        opacity:.55;
+        margin-top:35px;
+        padding:20px;
+    ">
+        🔥 Chill Bro AI • 🤖 AI • 📚 Study • 🎮 Gaming • 🌍 Multilingual
+    </div>
+    ''',
+    unsafe_allow_html=True,
+)
