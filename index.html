@@ -1,31 +1,111 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Chill Bro AI</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px;
+      background: #1c1c1c;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .chat {
+      height: 70vh;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .message {
+      padding: 12px 16px;
+      margin: 10px 0;
+      border-radius: 18px;
+      max-width: 80%;
+    }
+
+    .user {
+      background: #2563eb;
+      margin-left: auto;
+    }
+
+    .bot {
+      background: #292929;
+      margin-right: auto;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 10px;
+      background: #1c1c1c;
+    }
+
+    input {
+      flex: 1;
+      padding: 14px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+    }
+
+    button {
+      margin-left: 8px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 20px;
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>🔥 Chill Bro AI</h1>
 
-  <p>Talk to me, bro 😎</p>
+  <div class="header">🔥 Chill Bro AI</div>
 
-  <input id="message" placeholder="Type something..." />
-  <button onclick="sendMessage()">Send</button>
+  <div class="chat" id="chat">
+    <div class="message bot">
+      Yo bro 😎 What's up?
+    </div>
+  </div>
 
-  <div id="chat"></div>
+  <div class="input-area">
+    <input id="message" placeholder="Talk to me, bro...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
 
   <script>
     function sendMessage() {
-      let message = document.getElementById("message").value;
+      let input = document.getElementById("message");
       let chat = document.getElementById("chat");
 
-      if (message === "") return;
+      let message = input.value.trim();
 
-      chat.innerHTML += "<p><b>You:</b> " + message + "</p>";
-      chat.innerHTML += "<p><b>Chill Bro AI:</b> Yo bro 😎 I hear you!</p>";
+      if (!message) return;
 
-      document.getElementById("message").value = "";
+      chat.innerHTML +=
+        '<div class="message user">' + message + '</div>';
+
+      let reply = "Bro 😂 I'm still learning. Give me a second!";
+
+      chat.innerHTML +=
+        '<div class="message bot">' + reply + '</div>';
+
+      input.value = "";
+      chat.scrollTop = chat.scrollHeight;
     }
   </script>
+
 </body>
 </html>
