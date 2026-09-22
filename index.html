@@ -1,1 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chill Bro AI</title>
+</head>
 
+<body>
+  <h1>🔥 Chill Bro AI</h1>
+
+  <p>Talk to me, bro 😎</p>
+
+  <input id="message" placeholder="Type something..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <div id="chat"></div>
+
+  <script>
+    function sendMessage() {
+      let message = document.getElementById("message").value;
+      let chat = document.getElementById("chat");
+
+      if (message === "") return;
+
+      chat.innerHTML += "<p><b>You:</b> " + message + "</p>";
+      chat.innerHTML += "<p><b>Chill Bro AI:</b> Yo bro 😎 I hear you!</p>";
+
+      document.getElementById("message").value = "";
+    }
+  </script>
+</body>
+</html>
