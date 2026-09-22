@@ -524,7 +524,7 @@ with st.sidebar:
 
 def play_background_music():
 
-    filename = "7week 3days.mp3"
+    filename = "7 weeks & 3 days.mp3"
 
     if not os.path.exists(filename):
 
